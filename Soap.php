@@ -1,15 +1,19 @@
 <?php
- 
+
+const TAXI_NUM = 'ем33377';
+
 class Soap {
     
     const WSDL = 'http://82.138.16.126:8888/TaxiPublic/Service.svc?wsdl';
-    const REQUEST = '<taxi:RegNum>ем33377</taxi:RegNum>';
-    
+    const REQUEST_OPEN = '<taxi:RegNum>';
+    const REQUEST_CLOSE = '</taxi:RegNum>';
+
+
     public $client;
     public $exception;
 
 
-    public function connect() {
+    public function connect () {
         try {
             $this->client = new SoapClient(self::WSDL);
         } catch (SoapFault $e) {
@@ -20,8 +24,12 @@ class Soap {
         return true;
     }
     
-    public function request() {
-        return $this->client->GetTaxiInfos(self::REQUEST);
+    public function request ($taxiNum) {
+        return $this->client->GetTaxiInfos($this->createRequest($taxiNum));
+    }
+    
+    private function createRequest ($taxiNum){
+        return self::REQUEST_OPEN . $taxiNum . self::REQUEST_CLOSE;
     }
 }
 

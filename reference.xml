@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetTaxiInfosResponse xmlns="http://dtis.mos.ru/taxi">
+ <GetTaxiInfosResult>
+    <TaxiInfo>
+       <LicenseNum>02651</LicenseNum>
+       <LicenseDate>08.08.2011 0:00:00</LicenseDate>
+       <Name>ООО "НЖТ-ВОСТОК"</Name>
+       <OgrnNum>1107746402246</OgrnNum>
+       <OgrnDate>17.05.2010 0:00:00</OgrnDate>
+       <Brand>FORD</Brand>
+       <Model>FOCUS</Model>
+       <RegNum>ЕМ33377</RegNum>
+       <Year>2011</Year>
+       <BlankNum>002695</BlankNum>
+       <Info/>
+    </TaxiInfo>
+ </GetTaxiInfosResult>
+</GetTaxiInfosResponse>

@@ -16,11 +16,12 @@ class DataBase {
     
     public $dataBase;
     public $exception;
+    public $params;
     private $values;
     private $rows;
     private $insertValues;
 
-    public function __construct() {
+    public function __construct () {
         
         $this->exception = false;
         $this->values = array(EQUAL, REQUEST_DATE, RESPONSE_DATE, 
@@ -28,7 +29,7 @@ class DataBase {
         $this->values();
     }
     
-    public function connect(){
+    public function connect (){
         try {
             $this->dataBase = new PDO('mysql:host=' . self::HOST_NAME . ';dbname=' . self::DB_NAME, 
                     self::DB_USER, self::DB_PASS);
@@ -40,17 +41,27 @@ class DataBase {
         return true;
     }
 
-    public function insert($params){
+    public function insert (){
         
         $sql = 'INSERT INTO ' . self::TABLE_NAME . ' ' . $this->rows . ' VALUES ' . $this->insertValues;
         $stmt = $this->dataBase->prepare($sql);
         foreach ($this->values as $value) {
-            $stmt->bindParam(':' . $value, $params[$value]);
+            $stmt->bindParam(':' . $value, $this->params[$value]);
         }
         $stmt->execute();
     }
     
-    private function values(){
+    public function fillParams ($compare, $requestDate, $responseDate, $interval, $body) {
+        $this->params = [
+            EQUAL => $compare,
+            REQUEST_DATE => $requestDate,
+            RESPONSE_DATE => $responseDate,
+            TIME => $interval,
+            RESPONSE_BODY => $body,
+        ];
+    }
+
+    private function values (){
         
         $this->rows = '(';
         $this->insertValues = '(';

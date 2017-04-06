@@ -6,32 +6,30 @@ ini_set("soap.wsdl_cache_enabled", "0");
 
 include 'DataBase.php';
 include 'Soap.php';
+include 'ReferenceResponse.php';
+include 'reference.php';
+include 'Date.php';
 
-//$soap = new Soap();
-$dateTime = new DateTime('NOW');
-$params = array(
-    EQUAL => 0,
-    TIME => 4,
-    REQUEST_DATE => $dateTime->format( 'Ymd H:i' ),
-    RESPONSE_DATE => $dateTime->format( 'Ymd H:i' ),
-    RESPONSE_BODY => 'object(stdClass)#2 (1) {
-                        ["GetTaxiInfosResult"]=>
-                        object(stdClass)#3 (0) {
-                        }
-                      }',
-);
-
-
+$soap = new Soap();
 $db = new DataBase();
-if ($db->connect()) {
-    $res = $db->insert($params);
-} else {
-    echo '<pre>';
-    var_dump($db->exception);
-    echo '</pre>';
+$date = new Date();
+$xml = new ReferenceResponse(REFERENCE);
+
+if (!$db->connect()) {
+    echo $db->exception;
+    die;
 }
-//if($soap->connect()){
-//    $request = $soap->request();
-//} else {
-//    
-//}
+
+$date->start();
+if($soap->connect()){
+    $request = $soap->request(TAXI_NUM);
+    $date->end();
+    $date->difference();
+    $compare = $xml->compare($request);
+} else {
+    echo $soap->exception;
+    die;
+}
+$body = 'body';
+$db->fillParams($compare, $date->requestDate, $date->responseDate, $date->interval, serialize($request));
+$db->insert();
