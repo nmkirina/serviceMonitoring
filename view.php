@@ -21,10 +21,10 @@
             <div class="row">
                 <div class="col-xs-6">
                     <div id="sandbox-container" class="datepicker-half">
-                        <input type="text" class="form-control" name="date" value="Выберите начальную дату">
+                        <input type="text" class="form-control" name="date1" value="Выберите начальную дату">
                     </div>
                     <div id="sandbox-container" class="datepicker-half">
-                        <input type="text" class="form-control" name="date" value="Выберите конечную дату">
+                        <input type="text" class="form-control" name="date2" value="Выберите конечную дату">
                     </div>
                 </div>
                 <div class="col-xs-6">
@@ -77,7 +77,26 @@
            
         </div>
         <script>
-             $('#sandbox-container input').datepicker();
+             $('#sandbox-container input').datepicker().on('changeDate', function(e) {
+                 $(this).datepicker('hide');
+             });
+             
+    
+            $('[name=date2]').change(function(){
+                 var date1 = $('[name=date1]').val();
+                 var date2 = $('[name=date2]').val();
+
+                 $.ajax({
+                        url: 'index.php',
+                        type: "POST",
+                        data: `date1=${date1}&date2=${date2}`,
+                        success: function(data){
+                          //alert('Load was performed.' + data);
+                          console.log(data);
+                        }
+                      });
+             });
+                     
              
         </script>
     </body>
