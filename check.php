@@ -7,7 +7,6 @@ ini_set("soap.wsdl_cache_enabled", "0");
 include 'DataBase.php';
 include 'Soap.php';
 include 'ReferenceResponse.php';
-include 'reference.php';
 include 'Date.php';
 
 $soap = new Soap();
@@ -30,6 +29,5 @@ if($soap->connect()){
     echo $soap->exception;
     die;
 }
-$body = 'body';
 $db->fillParams($compare, $date->requestDate, $date->responseDate, $date->interval, serialize($request));
 $db->insert();

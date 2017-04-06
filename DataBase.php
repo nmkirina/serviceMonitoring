@@ -26,7 +26,6 @@ class DataBase {
         $this->exception = false;
         $this->values = array(EQUAL, REQUEST_DATE, RESPONSE_DATE, 
             TIME, RESPONSE_BODY);
-        $this->values();
     }
     
     public function connect (){
@@ -43,6 +42,7 @@ class DataBase {
 
     public function insert (){
         
+        $this->values();
         $sql = 'INSERT INTO ' . self::TABLE_NAME . ' ' . $this->rows . ' VALUES ' . $this->insertValues;
         $stmt = $this->dataBase->prepare($sql);
         foreach ($this->values as $value) {
@@ -59,6 +59,33 @@ class DataBase {
             TIME => $interval,
             RESPONSE_BODY => $body,
         ];
+    }
+    
+    public function getList ($startDate = NULL, $endDate = NULL) {
+        $sql = 'SELECT * FROM ' . self::TABLE_NAME;
+        if ($startDate) {
+            $sql .= ' WHERE ' . REQUEST_DATE . '>=\'' . $startDate . '\'';
+        }
+        if ($endDate) {
+            $sql .= ' AND ' . REQUEST_DATE . '<=\'' . $endDate . '\'';
+        }
+        return $this->getResult($sql);
+    }
+
+    public function getItem ($id) {
+        $sql = 'SELECT * FROM ' . self::TABLE_NAME . ' WHERE id=' . $id;
+        return $this->getResult($sql);
+    }
+
+    public function getLast() {
+        $sql = 'SELECT equal FROM ' . self::TABLE_NAME . ' ORDER BY id DESC LIMIT 1';
+        return $this->getResult($sql);
+    }
+
+    private function getResult ($sql) {
+        $sth = $this->dataBase->prepare($sql);
+        $sth->execute();
+        return $sth->fetchAll();
     }
 
     private function values (){
