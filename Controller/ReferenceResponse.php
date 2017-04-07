@@ -1,6 +1,6 @@
 <?php
 
-const REFERENCE = 'reference.xml';
+const REFERENCE = '../reference.xml';
 
 class ReferenceResponse {
     
@@ -17,7 +17,6 @@ class ReferenceResponse {
             'OgrnDate', 'Brand', 'Model', 'RegNum', 'Year', 'BlankNum', 'Info');
         $this->methods = array('GetTaxiInfosResult', 'TaxiInfo');
         $this->reference = $this->referenceXml;
-//        $this->setResponseBody();
     }
     
     public function compare ($currentResponse) {
@@ -26,20 +25,10 @@ class ReferenceResponse {
         return (($this->issetMethod()) && ($this->issetOptions())) + 0;
     }
     
-//    public function constructBody ($metod, $value = NULL) {
-//        
-//    }
-//    
-//    private function setResponseBody (){
-//        $this->responseBody = '<response></response>';
-//        $this->responseBody = new SimpleXMLElement($this->responseBody);
-//    }
-    
     private function issetMethod () {
         
         foreach ($this->methods as $method) {
             if (isset($this->currentResponse->$method)) {
-//                $this->constructBody($method);
                 $this->currentResponse = $this->currentResponse->$method;
                 $this->reference = $this->reference->$method;
             } else {

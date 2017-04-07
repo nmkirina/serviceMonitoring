@@ -4,7 +4,7 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 ini_set("soap.wsdl_cache_enabled", "0");
 
-include 'DataBase.php';
+include  '../Model/DataBase.php';
 include 'Soap.php';
 include 'ReferenceResponse.php';
 include 'Date.php';
